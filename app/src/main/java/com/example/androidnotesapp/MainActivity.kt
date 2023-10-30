@@ -18,27 +18,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp(){
-                Greeting("test")
+            val listOfNotes = remember{
+                mutableStateListOf<Note>()
             }
-
-        }
-    }
-}
-
-@Composable
-fun MyApp(content: @Composable () -> Unit){
-    val listOfNotes = remember{
-        mutableStateListOf<Note>()
-    }
-
-    AndroidNotesAppTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            content()
+            AndroidNotesAppTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Greeting("Android")
+                }
+            }
         }
     }
 }
@@ -53,8 +44,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    MyApp{
-        Greeting("test")
+fun GreetingPreview() {
+    AndroidNotesAppTheme {
+        Greeting("Android")
     }
 }
