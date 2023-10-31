@@ -92,7 +92,7 @@ fun RowView(note: Note) {
     ){
         Column (
             modifier = Modifier
-
+                .weight(1f)
         ){
             Text(
                 note.title,
@@ -107,7 +107,13 @@ fun RowView(note: Note) {
                 color = Color(227,119,36,255),
             )
         }
-        Text("test")
+        Column (
+            modifier = Modifier
+        ){
+            Text("Edit")
+            Text("Delete")
+        }
+
     }
     Spacer(modifier = Modifier.height(10.dp))
 }
