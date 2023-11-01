@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -73,16 +74,16 @@ fun MainScreen(
 }
 
 @Composable
-fun ListView(list: List<Note>) {
+fun ListView(list: MutableList<Note>) {
     LazyColumn {
         items(list) {note ->
-            RowView(note)
+            RowView(note, list)
         }
     }
 }
 
 @Composable
-fun RowView(note: Note) {
+fun RowView(note: Note, list: MutableList<Note>) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -110,8 +111,10 @@ fun RowView(note: Note) {
         Column (
             modifier = Modifier
         ){
-            Text("Edit")
-            Text("Delete")
+            EditNote(list)
+            DeleteNote(onClickHandler = {
+                list.remove(note)
+            })
         }
 
     }
@@ -145,6 +148,26 @@ fun AddNote(list: MutableList<Note>){
         }) {
             Text(text = "Add")
         }
+    }
+}
+
+@Composable
+fun EditNote(list: MutableList<Note>, ){
+    Button(
+        onClick = {
+
+    }) {
+        Text(text = "Edit")
+    }
+}
+
+@Composable
+fun DeleteNote(onClickHandler: () -> Unit){
+    Button(
+        onClick = {
+            onClickHandler()
+    }) {
+        Text(text = "Delete")
     }
 }
 
