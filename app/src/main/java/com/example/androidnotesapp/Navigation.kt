@@ -17,8 +17,9 @@ fun Navigation(list: MutableList<Note>){
         composable(route = Screen.AddScreen.route){
             AddScreen(list, navController = navController)
         }
-        composable(route = Screen.AddScreen.route){
-            EditScreen(list, navController = navController)
+        composable(route = Screen.EditScreen.route){navBackStackEntry ->
+            val index = navBackStackEntry.arguments?.getString("index") ?: ""
+            EditScreen(list, index = index, navController = navController)
         }
     }
 }

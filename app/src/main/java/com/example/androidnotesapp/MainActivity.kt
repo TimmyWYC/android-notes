@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.androidnotesapp.ui.theme.AndroidNotesAppTheme
 
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +61,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(
-    list: MutableList<Note>,
-    navController: NavController,
-    modifier: Modifier = Modifier.background(Color.LightGray)
-) {
+fun MainScreen(list: MutableList<Note>, navController: NavController, modifier: Modifier = Modifier.background(Color.LightGray)) {
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -74,10 +72,7 @@ fun MainScreen(
 }
 
 @Composable
-fun AddScreen(
-    list: MutableList<Note>,
-    navController: NavController,
-    ){
+fun AddScreen(list: MutableList<Note>, navController: NavController ){
     var title by rememberSaveable{
         mutableStateOf("")
     }
@@ -110,26 +105,78 @@ fun AddScreen(
                 .height(350.dp)
             )
         if (showError) {Text(text = "text: <= 150")}
-        Button(onClick = {
-            if(title.length in 3..30 && text.length <= 150){
-                list.add(Note(title = title,text = text))
-                navController.navigate(Screen.MainScreen.route)
-            }else{
-                showError = true
+        Row {
+            Button(onClick = {
+                if(title.length in 3..30 && text.length <= 150){
+                    list.add(Note(title = title,text = text))
+                    navController.navigate(Screen.MainScreen.route)
+                }else{
+                    showError = true
+                }
+            }) {
+                Text(text = "Ok")
             }
-        }) {
-            Text(text = "Ok")
+            Button(onClick = {
+                navController.navigate(Screen.MainScreen.route)
+            }) {
+                Text(text = "Cancel")
+            }
         }
     }
 }
 
 @Composable
-fun EditScreen(list: MutableList<Note>, navController: NavController){
-    Button(
-        onClick = {
+fun EditScreen(list: MutableList<Note>, index: String, navController: NavController){
+    var title by rememberSaveable{
+        mutableStateOf("")
+    }
+    var text by rememberSaveable{
+        mutableStateOf("")
+    }
+    var showError by rememberSaveable {
+        mutableStateOf(false)
+    }
 
-        }) {
-        Text(text = "Edit")
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.LightGray)
+    ) {
+        OutlinedTextField(
+            value = title,
+            onValueChange = { title = it},
+            label = { Text("Title") },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        if (showError) {Text(text = "Title: 3..30")}
+        OutlinedTextField(
+            value = text,
+            onValueChange = {text = it},
+            label = { Text(text = "Text") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(350.dp)
+        )
+        if (showError) {Text(text = "text: <= 150")}
+        Row {
+            Button(onClick = {
+                if(title.length in 3..30 && text.length <= 150){
+                    list[index.toInt()].title = title
+                    list[index.toInt()].text = text
+                    navController.navigate(Screen.MainScreen.route)
+                }else{
+                    showError = true
+                }
+            }) {
+                Text(text = "Ok")
+            }
+            Button(onClick = {
+                navController.navigate(Screen.MainScreen.route)
+            }) {
+                Text(text = "Cancel")
+            }
+        }
     }
 }
 
@@ -144,6 +191,9 @@ fun ListView(list: MutableList<Note>, navController: NavController) {
 
 @Composable
 fun RowView(note: Note, list: MutableList<Note>,navController: NavController) {
+    var index by rememberSaveable {
+        mutableStateOf("")
+    }
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -172,7 +222,9 @@ fun RowView(note: Note, list: MutableList<Note>,navController: NavController) {
             modifier = Modifier
         ){
             Button(onClick = {
-                navController.navigate(Screen.EditScreen.route)
+                //index = {list.indexOf(note)}.toString()
+                index = list.indexOf(note).toString()
+                navController.navigate(Screen.EditScreen.route.replace("{index}", index))
             }) {
                 Text(text = "Edit")
             }
@@ -218,7 +270,6 @@ fun DeleteNote(onClickHandler: () -> Unit){
         Text(text = "Delete")
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
