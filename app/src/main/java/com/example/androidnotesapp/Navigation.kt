@@ -1,11 +1,13 @@
 package com.example.androidnotesapp
 
-
-
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.androidnotesapp.Screens.AddScreen
+import com.example.androidnotesapp.Screens.EditScreen
+import com.example.androidnotesapp.Screens.MainScreen
+import com.example.androidnotesapp.Screens.Screen
 
 @Composable
 fun Navigation(list: MutableList<Note>){
@@ -17,7 +19,7 @@ fun Navigation(list: MutableList<Note>){
         composable(route = Screen.AddScreen.route){
             AddScreen(list, navController = navController)
         }
-        composable(route = Screen.EditScreen.route){navBackStackEntry ->
+        composable(route = Screen.EditScreen.route){ navBackStackEntry ->
             val index = navBackStackEntry.arguments?.getString("index") ?: ""
             EditScreen(list, index = index, navController = navController)
         }
