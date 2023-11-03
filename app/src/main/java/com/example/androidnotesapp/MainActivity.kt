@@ -11,13 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,6 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import com.example.androidnotesapp.ui.theme.AndroidNotesAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen(list = listOfNotes)
+                    Navigation(list = listOfNotes)
                 }
             }
         }
@@ -62,28 +62,89 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(
     list: MutableList<Note>,
+    navController: NavController,
     modifier: Modifier = Modifier.background(Color.LightGray)
 ) {
     Column (
         modifier = modifier
             .fillMaxSize()
     ){
-        AddNote(list = list)
-        ListView(list = list)
+        AddNote(list = list, navController)
+        ListView(list = list, navController)
     }
 }
 
 @Composable
-fun ListView(list: MutableList<Note>) {
-    LazyColumn {
-        items(list) {note ->
-            RowView(note, list)
+fun AddScreen(
+    list: MutableList<Note>,
+    navController: NavController,
+    ){
+    var title by rememberSaveable{
+        mutableStateOf("")
+    }
+    var text by rememberSaveable{
+        mutableStateOf("")
+    }
+    var showError by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.LightGray)
+    ) {
+        OutlinedTextField(
+            value = title,
+            onValueChange = { title = it},
+            label = { Text("Title") },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        if (showError) {Text(text = "Title: 3..30")}
+        OutlinedTextField(
+            value = text,
+            onValueChange = {text = it},
+            label = { Text(text = "Text") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(350.dp)
+            )
+        if (showError) {Text(text = "text: <= 150")}
+        Button(onClick = {
+            if(title.length in 3..30 && text.length <= 150){
+                list.add(Note(title = title,text = text))
+                navController.navigate(Screen.MainScreen.route)
+            }else{
+                showError = true
+            }
+        }) {
+            Text(text = "Ok")
         }
     }
 }
 
 @Composable
-fun RowView(note: Note, list: MutableList<Note>) {
+fun EditScreen(list: MutableList<Note>, navController: NavController){
+    Button(
+        onClick = {
+
+        }) {
+        Text(text = "Edit")
+    }
+}
+
+@Composable
+fun ListView(list: MutableList<Note>, navController: NavController) {
+    LazyColumn {
+        items(list) {note ->
+            RowView(note, list, navController)
+        }
+    }
+}
+
+@Composable
+fun RowView(note: Note, list: MutableList<Note>,navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -111,7 +172,11 @@ fun RowView(note: Note, list: MutableList<Note>) {
         Column (
             modifier = Modifier
         ){
-            EditNote(list)
+            Button(onClick = {
+                navController.navigate(Screen.EditScreen.route)
+            }) {
+                Text(text = "Edit")
+            }
             DeleteNote(onClickHandler = {
                 list.remove(note)
             })
@@ -122,7 +187,7 @@ fun RowView(note: Note, list: MutableList<Note>) {
 }
 
 @Composable
-fun AddNote(list: MutableList<Note>){
+fun AddNote(list: MutableList<Note>, navController: NavController){
     var title by rememberSaveable{
         mutableStateOf("")
     }
@@ -144,20 +209,10 @@ fun AddNote(list: MutableList<Note>){
         )
         Spacer(modifier = Modifier.weight(1f))
         Button(onClick = {
-            list.add(Note(title = "test",text = "test"))
+            navController.navigate(Screen.AddScreen.route)
         }) {
             Text(text = "Add")
         }
-    }
-}
-
-@Composable
-fun EditNote(list: MutableList<Note>, ){
-    Button(
-        onClick = {
-
-    }) {
-        Text(text = "Edit")
     }
 }
 
@@ -184,7 +239,7 @@ fun Preview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            MainScreen(list = listOfNotes)
+            Navigation(list = listOfNotes)
         }
     }
 }
