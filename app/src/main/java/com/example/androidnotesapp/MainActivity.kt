@@ -128,10 +128,10 @@ fun AddScreen(list: MutableList<Note>, navController: NavController ){
 @Composable
 fun EditScreen(list: MutableList<Note>, index: String, navController: NavController){
     var title by rememberSaveable{
-        mutableStateOf("")
+        mutableStateOf(list[index.toInt()].title)
     }
     var text by rememberSaveable{
-        mutableStateOf("")
+        mutableStateOf(list[index.toInt()].text)
     }
     var showError by rememberSaveable {
         mutableStateOf(false)
