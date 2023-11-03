@@ -34,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.androidnotesapp.ui.theme.AndroidNotesAppTheme
 
@@ -69,7 +68,7 @@ fun MainScreen(
         modifier = modifier
             .fillMaxSize()
     ){
-        AddNote(list = list, navController)
+        AddNote(navController)
         ListView(list = list, navController)
     }
 }
@@ -187,13 +186,7 @@ fun RowView(note: Note, list: MutableList<Note>,navController: NavController) {
 }
 
 @Composable
-fun AddNote(list: MutableList<Note>, navController: NavController){
-    var title by rememberSaveable{
-        mutableStateOf("")
-    }
-    var text by rememberSaveable{
-        mutableStateOf("")
-    }
+fun AddNote(navController: NavController){
     Row(
         modifier = Modifier
             .fillMaxWidth()
