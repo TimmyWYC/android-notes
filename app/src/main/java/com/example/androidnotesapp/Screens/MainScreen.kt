@@ -18,7 +18,9 @@ fun MainScreen(list: MutableList<Note>, navController: NavController, modifier: 
         modifier = modifier
             .fillMaxSize()
     ){
+        // Display the "AddNote"
         AddNote(navController)
+        // Display the "ListView"
         ListView(list = list, navController)
     }
 }

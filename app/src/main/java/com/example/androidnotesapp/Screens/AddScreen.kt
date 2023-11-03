@@ -22,6 +22,7 @@ import com.example.androidnotesapp.Note
 
 @Composable
 fun AddScreen(list: MutableList<Note>, navController: NavController){
+    // Define mutable state variables for the title, text, and an error flag.
     var title by rememberSaveable{
         mutableStateOf("")
     }
@@ -37,6 +38,7 @@ fun AddScreen(list: MutableList<Note>, navController: NavController){
             .fillMaxWidth()
             .background(Color.LightGray)
     ) {
+        // Display an OutlinedTextField for adding the title.
         OutlinedTextField(
             value = title,
             onValueChange = { title = it},
@@ -47,6 +49,7 @@ fun AddScreen(list: MutableList<Note>, navController: NavController){
         if (showError) {
             Text(text = "Title: 3..30")
         }
+        // Display an OutlinedTextField for adding the text.
         OutlinedTextField(
             value = text,
             onValueChange = {text = it},
@@ -58,9 +61,11 @@ fun AddScreen(list: MutableList<Note>, navController: NavController){
         if (showError) {
             Text(text = "text: <= 150")
         }
+        // Create a row with "Ok" and "Cancel" buttons
         Row {
             Button(onClick = {
                 if(title.length in 3..30 && text.length <= 150){
+                    // Add a new note to the list
                     list.add(Note(title = title,text = text))
                     navController.navigate(Screen.MainScreen.route)
                 }else{
@@ -70,6 +75,7 @@ fun AddScreen(list: MutableList<Note>, navController: NavController){
                 Text(text = "Ok")
             }
             Button(onClick = {
+                // Navigate back to the main screen without adding
                 navController.navigate(Screen.MainScreen.route)
             }) {
                 Text(text = "Cancel")

@@ -32,6 +32,7 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
     var index by rememberSaveable {
         mutableStateOf("")
     }
+    // Create a row where the notse are with a rounded dark gray background and padding.
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -39,6 +40,7 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
             .background(Color.DarkGray)
             .padding(10.dp),
     ){
+        // Create a left column for the title and text of the note
         Column (
             modifier = Modifier
                 .weight(1f)
@@ -56,11 +58,12 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
                 color = Color(227,119,36,255),
             )
         }
+        // Create a right column for Edit and Delete buttons.
         Column (
             modifier = Modifier
         ){
             Button(onClick = {
-                //index = {list.indexOf(note)}.toString()
+                // Determine the index of the note in the list and navigate to the Edit Screen with that index.
                 index = list.indexOf(note).toString()
                 navController.navigate(Screen.EditScreen.route.replace("{index}", index))
             }) {
@@ -72,5 +75,6 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
         }
 
     }
+    // Create spacing between rows.
     Spacer(modifier = Modifier.height(10.dp))
 }

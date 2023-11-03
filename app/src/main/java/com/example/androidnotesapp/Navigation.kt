@@ -9,18 +9,28 @@ import com.example.androidnotesapp.Screens.EditScreen
 import com.example.androidnotesapp.Screens.MainScreen
 import com.example.androidnotesapp.Screens.Screen
 
+/*
+*Define the navigation for your app using Jetpack Compose Navigation.
+*/
 @Composable
 fun Navigation(list: MutableList<Note>){
+    // Create a navigation controller to manage the navigation within your app.
     val navController = rememberNavController()
+    // Define the starting destination for your app's navigation.
     NavHost(navController = navController, startDestination = Screen.MainScreen.route){
+        // Define different screens (composable) and their routes.
         composable(route = Screen.MainScreen.route){
+            // Show the MainScreen
             MainScreen(list,navController = navController)
         }
         composable(route = Screen.AddScreen.route){
+            // Show the Add Screen
             AddScreen(list, navController = navController)
         }
         composable(route = Screen.EditScreen.route){ navBackStackEntry ->
+            //retrieve the index from the navigation arguments.
             val index = navBackStackEntry.arguments?.getString("index") ?: ""
+            // Show the Edit Screen,
             EditScreen(list, index = index, navController = navController)
         }
     }

@@ -32,6 +32,7 @@ fun AddNote(navController: NavController){
                 fontWeight = FontWeight.Bold
             )
         )
+        // Create a spacer to push the "Add" button to the right.
         Spacer(modifier = Modifier.weight(1f))
         Button(onClick = {
             navController.navigate(Screen.AddScreen.route)

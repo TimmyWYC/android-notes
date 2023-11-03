@@ -19,8 +19,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            // Create a list of notes with two initial notes.
             val listOfNotes = remember{
-                mutableStateListOf<Note>(Note(title = "note1", text = "text1"), Note(title = "note2", text = "text2"))
+                mutableStateListOf<Note>(
+                    Note(title = "note1", text = "text1"),
+                    Note(title = "note2", text = "text2"))
             }
             AndroidNotesAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -29,6 +32,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // Start the navigation, passing the list of notes to the Navigation composable.
                     Navigation(list = listOfNotes)
                 }
             }
