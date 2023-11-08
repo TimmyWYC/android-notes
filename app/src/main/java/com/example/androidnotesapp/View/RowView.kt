@@ -45,6 +45,10 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
         Column (
             modifier = Modifier
                 .weight(1f)
+                .clickable {
+                    index = list.indexOf(note).toString()
+                    navController.navigate(Screen.DetailScreen.route.replace("{index}", index))
+            }
         ){
             Text(
                 note.title,
@@ -52,11 +56,7 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.clickable {
-                    index = list.indexOf(note).toString()
-                    navController.navigate(Screen.DetailScreen.route.replace("{index}", index))
-                }
+                )
             )
             Text(
                 note.text,
