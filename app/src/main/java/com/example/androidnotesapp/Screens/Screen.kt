@@ -8,4 +8,5 @@ sealed class Screen(val route: String){
     // This allows you to specify the index when navigating to the edit screen.
     // and not crashing!!!!!!
     object EditScreen: Screen("Edit_screen/{index}")
+    object DetailScreen: Screen("DetailScreen/{index}")
 }

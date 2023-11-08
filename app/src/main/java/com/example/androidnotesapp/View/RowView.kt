@@ -1,6 +1,7 @@
 package com.example.androidnotesapp.View
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -51,7 +52,11 @@ fun RowView(note: Note, list: MutableList<Note>, navController: NavController) {
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
-                )
+                ),
+                modifier = Modifier.clickable {
+                    index = list.indexOf(note).toString()
+                    navController.navigate(Screen.DetailScreen.route.replace("{index}", index))
+                }
             )
             Text(
                 note.text,

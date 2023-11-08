@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.androidnotesapp.Screens.AddScreen
+import com.example.androidnotesapp.Screens.DetailScreen
 import com.example.androidnotesapp.Screens.EditScreen
 import com.example.androidnotesapp.Screens.MainScreen
 import com.example.androidnotesapp.Screens.Screen
@@ -32,6 +33,12 @@ fun Navigation(list: MutableList<Note>){
             val index = navBackStackEntry.arguments?.getString("index") ?: ""
             // Show the Edit Screen,
             EditScreen(list, index = index, navController = navController)
+        }
+        composable(route = Screen.DetailScreen.route){navBackStackEntry ->
+            val index = navBackStackEntry.arguments?.getString("index") ?: ""
+            val note = list[index.toInt()]
+            // Show the DetailScreen
+            DetailScreen(note,navController = navController)
         }
     }
 }
