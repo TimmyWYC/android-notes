@@ -14,7 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidnotesapp.ui.theme.AndroidNotesAppTheme
 
 
-
+//ChatGpt Link:
+//https://chat.openai.com/share/5d3deb3f-dd5f-4e64-9637-b2ecb000ea04
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
